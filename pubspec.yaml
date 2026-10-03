@@ -1,0 +1,24 @@
+name: settings_repository
+description: dart_code_3D settings (theme mode and engine rules), persisted with shared_preferences.
+version: 0.1.0+1
+publish_to: none
+resolution: workspace
+
+environment:
+  sdk: ^3.13.0
+  flutter: ^3.47.0
+
+dependencies:
+  code_analysis_engine:
+    path: ../code_analysis_engine
+  equatable: ^3.0.0
+  flutter:
+    sdk: flutter
+  shared_preferences: ^2.5.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  mocktail: ^1.0.5
+  shared_preferences_platform_interface: ^2.4.0
+  very_good_analysis: ^11.0.0
