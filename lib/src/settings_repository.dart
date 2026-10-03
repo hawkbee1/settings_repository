@@ -16,7 +16,20 @@ enum AppThemeMode {
   dark,
 }
 
-/// The user's settings: theme mode and engine rules, persisted with
+/// When the viewer shows its on-screen touch controls.
+enum TouchControlsMode {
+  /// On phones and tablets, or after touch input without a keyboard.
+  auto,
+
+  /// Always.
+  always,
+
+  /// Never.
+  never,
+}
+
+/// The user's settings: theme mode, touch controls and engine rules,
+/// persisted with
 /// `shared_preferences`.
 ///
 /// Corrupt or unknown stored values fall back to the defaults: settings
@@ -29,6 +42,9 @@ class SettingsRepository {
 
   /// Storage key of the theme mode.
   static const themeModeKey = 'dc3d.theme_mode';
+
+  /// Storage key of the touch controls mode.
+  static const touchControlsKey = 'dc3d.touch_controls';
 
   /// Storage key of the rules (one JSON object: rule id → value).
   static const rulesKey = 'dc3d.rules';
@@ -44,6 +60,17 @@ class SettingsRepository {
   /// Stores [mode].
   Future<void> setThemeMode(AppThemeMode mode) =>
       _preferences.setString(themeModeKey, mode.name);
+
+  /// The stored touch controls mode ([TouchControlsMode.auto] by default).
+  Future<TouchControlsMode> touchControls() async {
+    final stored = await _preferences.getString(touchControlsKey);
+    return TouchControlsMode.values.asNameMap()[stored] ??
+        TouchControlsMode.auto;
+  }
+
+  /// Stores [mode].
+  Future<void> setTouchControls(TouchControlsMode mode) =>
+      _preferences.setString(touchControlsKey, mode.name);
 
   /// The stored rules (defaults for anything missing or invalid).
   Future<AnalysisRules> rules() async {

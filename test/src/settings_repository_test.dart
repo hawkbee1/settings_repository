@@ -38,6 +38,24 @@ void main() {
       });
     });
 
+    group('touchControls', () {
+      test('is auto by default and for an unknown stored value', () async {
+        expect(await repository.touchControls(), TouchControlsMode.auto);
+
+        await preferences.setString(SettingsRepository.touchControlsKey, '?');
+
+        expect(await repository.touchControls(), TouchControlsMode.auto);
+      });
+
+      test('survives a new repository on the same storage', () async {
+        await repository.setTouchControls(TouchControlsMode.never);
+
+        final reopened = SettingsRepository(preferences: preferences);
+
+        expect(await reopened.touchControls(), TouchControlsMode.never);
+      });
+    });
+
     group('rules', () {
       test('are the defaults when nothing is stored', () async {
         expect(await repository.rules(), AnalysisRules.defaults());
